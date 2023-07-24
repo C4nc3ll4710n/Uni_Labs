@@ -10,11 +10,13 @@ using namespace std;
 // negative numbers: [1, 456, 123]
 class LNum {
         vector <int> num_vec; // number
+        bool type; // 0 = +; 1 = -
         friend ostream& operator<<(ostream& os, LNum num);
         friend istream& operator>>(istream& is, LNum& num);
     public:
         LNum(){
             num_vec.push_back(0);
+            type = 0;
         }
 
         void put(long int a){
@@ -82,6 +84,8 @@ class LNum {
         }
 
         void out(){
+            if (type == 1)
+                cout << "-";
             for  (int i=0; i<num_vec.size(); i++)
                 cout << num_vec[i] << " ";
         }
@@ -112,6 +116,8 @@ class LNum {
 };
 
 ostream& operator<<(ostream& os, LNum num){
+            if (num.type==1)
+                os << "-";
             for (long int i=num.num_vec.size()-1; i>=0; i--){
                 if (num.num_vec[i]<10 && i!=num.num_vec.size()-1)
                     os << 0 << 0 << num.num_vec[i] << " "; // 010 100 1 - 1100100 
@@ -126,9 +132,15 @@ ostream& operator<<(ostream& os, LNum num){
 }
 
 istream& operator>>(istream& is, LNum& num){
-            string a;
-            is >> a;
-
+            string inp, a = "";
+            is >> inp;
+            if (inp[0]=='-'){
+                num.type=1;
+                for (int i = 1; i<inp.size();i++)
+                    a+=inp[i];
+            }
+            else
+                a = inp;
             num.num_vec.clear();
             int ins = 0;
             int rev_ins = 0;
@@ -176,8 +188,8 @@ int main(){
     
     LNum a, b;
     cin >> a >> b;
-    cout << a+b << "\n" << a << "\n" << b;
-
+    //cout << a+b << "\n" << a << "\n" << b;
+    cout << a << b;
     
 
     
