@@ -141,7 +141,9 @@ istream& operator>>(istream& is, LNum& num){
             }
             else
                 a = inp;
+            cout << "this is a" << a  << "\n";
             num.num_vec.clear();
+            cout << num.num_vec.size() << "this is size" << "\n";
             int ins = 0;
             int rev_ins = 0;
             int k = 0;
@@ -150,6 +152,7 @@ istream& operator>>(istream& is, LNum& num){
                 if (k<3){
                     ins = ins*10 + (a[i]-'0'); //100 -> 1
                     k++;
+                    cout << "this is ins" << ins << "\n";
                 }
                 if (k==3 ){
                     
@@ -163,6 +166,7 @@ istream& operator>>(istream& is, LNum& num){
                     ins/=10;
                     }
                     rev_ins*=koeff;
+                    cout << "this is rev_ins" << rev_ins << "\n";
                     num.num_vec.push_back(rev_ins);
                     rev_ins = 0;
                     k = 0;
@@ -170,10 +174,11 @@ istream& operator>>(istream& is, LNum& num){
                 }
             }       
             while (ins >0){
-            rev_ins = rev_ins*10 + ins%10; 
-            ins/=10;
+                rev_ins = rev_ins*10 + ins%10; 
+                ins/=10;
             }
-            num.num_vec.push_back(rev_ins);
+            if (rev_ins !=0 )
+                num.num_vec.push_back(rev_ins);
             rev_ins = 0;
             k = 0;
 
