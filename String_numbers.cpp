@@ -89,7 +89,7 @@ class LNum {
             for  (int i=0; i<num_vec.size(); i++)
                 cout << num_vec[i] << " ";
         }
-                                   
+        // 10 - 5 == 10 + -5 == -5 + 10                         
         LNum operator +(LNum a){
             LNum sum;
             sum.pop();
@@ -111,79 +111,162 @@ class LNum {
             return sum;
         }
 
+        bool operator <(LNum a){
+            if (num_vec.size()<a.num_vec.size())
+                return true;
+            else if (num_vec.size()>a.num_vec.size())
+                return false;
+            else if (type == 1 && a.type == 0)
+                return true;
+            else if (type == 0 && a.type == 1)
+                return false;
+            else{
+                if (type == 1){
+                    for (int i=num_vec.size()-1; i>=0; i--){
+                        if (num_vec[i]>a.num_vec[i])
+                            return true;
+                        else if (num_vec[i]<a.num_vec[i])
+                            return false;
+                    }
+                    return false;//in case "="
+                }
+                else {
+                    for (int i=num_vec.size()-1; i>=0; i--){
+                        if (num_vec[i]>a.num_vec[i])
+                            return false;
+                        else if (num_vec[i]<a.num_vec[i])
+                            return true;
+                    }
+                    return false;//in case "="
+                }
+                
+            }
+        }
+
+        bool operator >(LNum a){
+            if (num_vec.size()>a.num_vec.size())
+                return true;
+            else if (num_vec.size()<a.num_vec.size())
+                return false;
+            else if (type == 0 && a.type == 1)
+                return true;
+            else if (type == 1 && a.type == 0)
+                return false;
+            else{
+                if (type == 0){
+                    for (int i=num_vec.size()-1; i>=0; i--){
+                        if (num_vec[i]>a.num_vec[i])
+                            return true;
+                        else if (num_vec[i]<a.num_vec[i])
+                            return false;
+                    }
+                    return false;//in case "="
+                }
+                else {
+                    for (int i=num_vec.size()-1; i>=0; i--){
+                        if (num_vec[i]>a.num_vec[i])
+                            return false;
+                        else if (num_vec[i]<a.num_vec[i])
+                            return true;
+                    }
+                    return false;//in case "="
+                }
+                
+            }
+        }
+
+        bool operator ==(LNum a){
+            if (num_vec.size()>a.num_vec.size())
+                return false;
+            else if (num_vec.size()<a.num_vec.size())
+                return false;
+            else if (type != a.type)
+                return false;
+            else{
+                for (int i=num_vec.size()-1; i>=0; i--){
+                    if (num_vec[i]>a.num_vec[i])
+                        return false;
+                    else if (num_vec[i]<a.num_vec[i])
+                        return false;
+                }
+                return true;
+            }
+        }
+/*
+        LNum operator -(LNum a){
+            LNum diff;
+            
+        }
+*/
+
         ~LNum(){};
 
 };
 
 ostream& operator<<(ostream& os, LNum num){
-            if (num.type==1)
-                os << "-";
-            for (long int i=num.num_vec.size()-1; i>=0; i--){
-                if (num.num_vec[i]<10 && i!=num.num_vec.size()-1)
-                    os << 0 << 0 << num.num_vec[i] << " "; // 010 100 1 - 1100100 
-                else if (num.num_vec[i]>=10 && num.num_vec[i]<100 && i!=num.num_vec.size()-1)
-                    os << 0 << num.num_vec[i] << " ";
-                else
-                    os << num.num_vec[i] << " ";
-            } //here must be i>=0 but i use i>0 bc of 0 from constructor
+    if (num.type==1)
+        os << "-";
+    for (long int i=num.num_vec.size()-1; i>=0; i--){
+        if (num.num_vec[i]<10 && i!=num.num_vec.size()-1)
+            os << 0 << 0 << num.num_vec[i] << " "; // 010 100 1 - 1100100 
+        else if (num.num_vec[i]>=10 && num.num_vec[i]<100 && i!=num.num_vec.size()-1)
+            os << 0 << num.num_vec[i] << " ";
+        else
+            os << num.num_vec[i] << " ";
+    } 
                 
-            os << "\n";
-            return os;
+    os << "\n";
+    return os;
 }
 
 istream& operator>>(istream& is, LNum& num){
-            string inp, a = "";
-            is >> inp;
-            if (inp[0]=='-'){
-                num.type=1;
-                for (int i = 1; i<inp.size();i++)
-                    a+=inp[i];
-            }
-            else
-                a = inp;
-            cout << "this is a" << a  << "\n";
-            num.num_vec.clear();
-            cout << num.num_vec.size() << "this is size" << "\n";
-            int ins = 0;
-            int rev_ins = 0;
-            int k = 0;
-            int koeff = 1;
-            for (long int i =a.size()-1; i>=0; i--){//1 350 000
-                if (k<3){
-                    ins = ins*10 + (a[i]-'0'); //100 -> 1
-                    k++;
-                    cout << "this is ins" << ins << "\n";
-                }
-                if (k==3 ){
+    string inp, a = "";
+    is >> inp;
+    if (inp[0]=='-'){
+        num.type=1;
+        for (int i = 1; i<inp.size();i++)
+            a+=inp[i];
+    }
+    else
+        a = inp;
+    num.num_vec.clear();
+    int ins = 0;
+    int rev_ins = 0;
+    int k = 0;
+    int koeff = 1;
+    for (long int i =a.size()-1; i>=0; i--){//1 350 000
+        if (k<3){
+            ins = ins*10 + (a[i]-'0'); //100 -> 1
+            k++;
+        }
+        if (k==3 ){
+            if (ins <10)
+                koeff = 100;
+            else if (ins >=10 && ins<100)
+                koeff = 10;
                     
-                    if (ins <10)
-                        koeff = 100;
-                    else if (ins >=10 && ins<100)
-                        koeff = 10;
-                    
-                    while (ins >0){
-                    rev_ins = rev_ins*10 + ins%10; 
-                    ins/=10;
-                    }
-                    rev_ins*=koeff;
-                    cout << "this is rev_ins" << rev_ins << "\n";
-                    num.num_vec.push_back(rev_ins);
-                    rev_ins = 0;
-                    k = 0;
-                    koeff = 1;
-                }
-            }       
             while (ins >0){
                 rev_ins = rev_ins*10 + ins%10; 
                 ins/=10;
             }
-            if (rev_ins !=0 )
+                rev_ins*=koeff;
                 num.num_vec.push_back(rev_ins);
-            rev_ins = 0;
-            k = 0;
+                rev_ins = 0;
+                k = 0;
+                koeff = 1;
+        }
+    }       
+    while (ins >0){
+        rev_ins = rev_ins*10 + ins%10; 
+        ins/=10;
+        }
+    if (rev_ins !=0 )
+        num.num_vec.push_back(rev_ins);
+    rev_ins = 0;
+    k = 0;
 
 
-        return is;
+    return is;
             
 }
 
@@ -193,7 +276,8 @@ int main(){
     
     LNum a, b;
     cin >> a >> b;
-    //cout << a+b << "\n" << a << "\n" << b;
+    if (a < b)
+        cout << "yes" << "\n";
     cout << a << b;
     
 
