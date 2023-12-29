@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<Town>
+    		<NumberOfCitizens> 3000 </NumberOfCitizens>
+    		<MayorName> MayorFile </MayorName>
+    		<CountryName> XMLCountry </CountryName>
+    		<TownName> TownCorrect </TownName>
+	</Town>
